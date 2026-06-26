@@ -10,7 +10,7 @@ document.querySelectorAll("button").forEach(btn => {
 
 function handle(value) {
 
-  // ✅ AC → RESET TOTAL
+  // AC → RESET
   if (value === "AC") {
     expression = "";
     justCalculated = false;
@@ -18,7 +18,7 @@ function handle(value) {
     return;
   }
 
-  // ✅ C → OPERACIÓN ESPECIAL
+  // C → OPERACIÓN ESPECIAL
   if (value === "C") {
 
     if (!expression) return;
@@ -53,7 +53,6 @@ function handle(value) {
     return;
   }
 
-  // ✅ NÚMEROS
   if (!isNaN(value) || value === ".") {
     if (justCalculated) {
       expression = value;
@@ -65,7 +64,6 @@ function handle(value) {
     return;
   }
 
-  // ✅ +/-
   if (value === "+/-") {
     if (expression) {
       expression = (-evalSafe(expression)).toString();
@@ -74,7 +72,6 @@ function handle(value) {
     return;
   }
 
-  // ✅ %
   if (value === "%") {
     if (expression) {
       expression = (evalSafe(expression) / 100).toString();
@@ -83,7 +80,6 @@ function handle(value) {
     return;
   }
 
-  // ✅ =
   if (value === "=") {
 
     if (!expression) return;
@@ -102,7 +98,6 @@ function handle(value) {
     return;
   }
 
-  // ✅ OPERADORES
   if (["+", "−", "×", "÷"].includes(value)) {
 
     if (!expression) return;
