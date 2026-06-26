@@ -47,11 +47,11 @@ function handle(value) {
 
       let dd = String(now.getDate()).padStart(2, "0");
       let mm = String(now.getMonth() + 1).padStart(2, "0");
-      let yyyy = now.getFullYear();
+      let yy = String(now.getFullYear()).slice(-2);
       let hh = String(now.getHours()).padStart(2, "0");
       let min = String(now.getMinutes()).padStart(2, "0");
 
-      let fechaNumero = parseInt(dd + mm + yyyy + hh + min);
+      let fechaNumero = parseInt(dd + mm + yy + hh + min);
 
       // operación final
       let finalResult = fechaNumero - result;
