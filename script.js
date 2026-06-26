@@ -1,9 +1,9 @@
 
 let display = document.getElementById("display");
 
-let current = "";
-let operator = "";
-let previous = "";
+let current = "0";
+let previous = null;
+let operator = null;
 
 document.querySelectorAll("button").forEach(btn => {
   btn.addEventListener("click", () => handleInput(btn.innerText));
@@ -11,27 +11,39 @@ document.querySelectorAll("button").forEach(btn => {
 
 function handleInput(value) {
   if (!isNaN(value) || value === ".") {
-    current += value;
+    if (current === "0") {
+      current = value;
+    } else {
+      current += value;
+    }
     update();
-  } else if (value === "AC") {
-    current = "";
-    previous = "";
-    operator = "";
-    update("0");
-  } else if (value === "=") {
+  } 
+  else if (value === "AC") {
+    current = "0";
+    previous = null;
+    operator = null;
+    update();
+  } 
+  else if (value === "=") {
     calculate();
     update();
-  } else {
+    operator = null;
+  } 
+  else {
+    // operador + - × ÷
+    if (previous !== null) {
+      calculate();
+    }
     operator = value;
-    previous = current;
-    current = "";
+    previous = parseFloat(current);
+    current = "0";
   }
 }
 
 function calculate() {
-  let result;
-  let a = parseFloat(previous);
+  let a = previous;
   let b = parseFloat(current);
+  let result = 0;
 
   switch (operator) {
     case "+": result = a + b; break;
@@ -41,9 +53,10 @@ function calculate() {
   }
 
   current = result.toString();
+  previous = null;
 }
 
-function update(val = current) {
-  display.innerText = val || "0";
+function update() {
+  display.innerText = current;
 }
-``
+
