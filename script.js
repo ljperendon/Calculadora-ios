@@ -23,7 +23,7 @@ function handleInput(value) {
     update();
   }
 
-  // ✅ RESET
+  // ✅ AC (reset total)
   else if (value === "AC") {
     expression = "";
     justCalculated = false;
@@ -32,6 +32,8 @@ function handleInput(value) {
 
   // ✅ IGUAL
   else if (value === "=") {
+
+    if (expression === "") return;
 
     try {
       let result = eval(
@@ -48,6 +50,7 @@ function handleInput(value) {
 
     } catch {
       update("Error");
+      expression = "";
     }
   }
 
@@ -56,8 +59,9 @@ function handleInput(value) {
 
     if (expression === "") return;
 
-    // evitar operadores duplicados
-    let lastChar = expression.trim().slice(-1);
+    let lastChar = expression.slice(-1);
+
+    // si el último ya es operador → reemplaza
     if (["+", "−", "×", "÷"].includes(lastChar)) {
       expression = expression.slice(0, -1) + value;
     } else {
@@ -70,6 +74,13 @@ function handleInput(value) {
   }
 }
 
+// ✅ ACTUALIZAR DISPLAY SIN BUG
 function update(value) {
-  display.innerText = value || expression || "0";
+  if (value !== undefined) {
+    display.innerText = value;
+  } else if (expression !== "") {
+    display.innerText = expression;
+  } else {
+    display.innerText = "0";
+  }
 }
