@@ -15,7 +15,7 @@ body {
   margin: auto;
 }
 
-/* ICONOS SUPERIORES */
+/* ICONOS SUPERIOR */
 .top-bar {
   display: flex;
   justify-content: flex-end;
@@ -51,7 +51,7 @@ body {
   justify-content: flex-end;
 }
 
-/* BOTONES */
+/* GRID */
 .buttons {
   display: grid;
   grid-template-columns: repeat(4, 80px);
