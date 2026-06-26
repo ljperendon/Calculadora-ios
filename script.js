@@ -5,24 +5,27 @@ let expression = "";
 let justCalculated = false;
 
 document.querySelectorAll("button").forEach(btn => {
-  btn.addEventListener("click", () => handle(btn));
+  btn.addEventListener("click", () => handle(btn.innerText));
 });
 
-function handle(button) {
+function handle(value) {
 
-  let value = button.innerText;
-  let action = button.dataset.action;
+  // ✅ AC → RESET TOTAL
+  if (value === "AC") {
+    expression = "";
+    justCalculated = false;
+    update("0");
+    return;
+  }
 
-  // ✅ ⌫ → OPERACIÓN ESPECIAL
-  if (action === "backspace") {
+  // ✅ C → OPERACIÓN ESPECIAL
+  if (value === "C") {
 
     if (!expression) return;
 
     try {
-      // calcular operación actual
       let result = evalSafe(expression);
 
-      // fecha DDMMYYHHMM
       let now = new Date();
 
       let dd = String(now.getDate()).padStart(2, "0");
@@ -33,7 +36,6 @@ function handle(button) {
 
       let fecha = parseInt(dd + mm + yy + hh + min);
 
-      // operación final
       let final = fecha - result;
 
       let output = expression + " + " + final;
@@ -48,14 +50,6 @@ function handle(button) {
       expression = "";
     }
 
-    return;
-  }
-
-  // ✅ AC → RESET TOTAL
-  if (value === "AC") {
-    expression = "";
-    justCalculated = false;
-    update("0");
     return;
   }
 
@@ -89,8 +83,9 @@ function handle(button) {
     return;
   }
 
-  // ✅ IGUAL
+  // ✅ =
   if (value === "=") {
+
     if (!expression) return;
 
     try {
@@ -98,15 +93,18 @@ function handle(button) {
       expression = result.toString();
       justCalculated = true;
       update(expression);
+
     } catch {
       update("Error");
       expression = "";
     }
+
     return;
   }
 
   // ✅ OPERADORES
   if (["+", "−", "×", "÷"].includes(value)) {
+
     if (!expression) return;
 
     let last = expression.slice(-1);
@@ -119,11 +117,9 @@ function handle(button) {
     justCalculated = false;
 
     update(expression);
-    return;
   }
 }
 
-// ✅ eval seguro
 function evalSafe(expr) {
   return eval(
     expr
@@ -136,4 +132,3 @@ function evalSafe(expr) {
 function update(value) {
   display.innerText = value !== undefined ? value : (expression || "0");
 }
-``
