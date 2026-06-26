@@ -3,31 +3,39 @@ body {
   margin: 0;
   background: black;
   font-family: Arial, sans-serif;
+  height: 100vh;
 }
 
 .calculator {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   max-width: 400px;
   margin: auto;
-  padding: 10px;
 }
 
 #display {
   color: white;
-  font-size: 60px;
+  font-size: 70px;
   text-align: right;
   padding: 20px;
-  word-wrap: break-word;
+  flex: 1; /* 👈 ocupa todo el espacio superior */
+  display: flex;
+  align-items: flex-end; /* 👈 baja el número */
+  justify-content: flex-end;
 }
 
 .buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+  padding: 10px;
+  margin-bottom: 20px; /* 👈 separa del borde inferior */
 }
 
 button {
   font-size: 24px;
-  padding: 20px;
+  padding: 22px;
   border-radius: 50%;
   border: none;
   background: #333;
@@ -45,9 +53,4 @@ button:active {
 
 .orange {
   background: #ff9500;
-}
-
-.zero {
-  grid-column: span 2;
-  border-radius: 50px;
 }
