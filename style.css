@@ -15,12 +15,16 @@ body {
   margin: auto;
 }
 
-/* ICONOS SUPERIOR */
+/* ICONOS SUPERIORES */
 .top-bar {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  justify-content: space-between;
   padding: 10px 20px;
+}
+
+.icon-left,
+.icon-right {
+  display: flex;
 }
 
 .icon-circle {
@@ -51,7 +55,7 @@ body {
   justify-content: flex-end;
 }
 
-/* GRID */
+/* BOTONES */
 .buttons {
   display: grid;
   grid-template-columns: repeat(4, 80px);
