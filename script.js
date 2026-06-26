@@ -1,40 +1,33 @@
-
-let display = document.getElementById("display");
+const display = document.getElementById("display");
 
 let expression = "";
 let justCalculated = false;
 
 document.querySelectorAll("button").forEach(btn => {
-  btn.addEventListener("click", () => handleInput(btn.innerText));
+  btn.addEventListener("click", () => handle(btn.innerText));
 });
 
-function handleInput(value) {
+function handle(value) {
 
-  // ✅ NÚMEROS
+  // Números
   if (!isNaN(value) || value === ".") {
-
     if (justCalculated) {
       expression = value;
       justCalculated = false;
     } else {
       expression += value;
     }
-
     update();
   }
 
-  // ✅ AC (reset total)
+  // AC
   else if (value === "AC") {
     expression = "";
-    justCalculated = false;
     update("0");
   }
 
-  // ✅ IGUAL
+  // Igual
   else if (value === "=") {
-
-    if (expression === "") return;
-
     try {
       let result = eval(
         expression
@@ -54,33 +47,23 @@ function handleInput(value) {
     }
   }
 
-  // ✅ OPERADORES
+  // Operadores
   else {
-
     if (expression === "") return;
 
-    let lastChar = expression.slice(-1);
+    let last = expression.slice(-1);
 
-    // si el último ya es operador → reemplaza
-    if (["+", "−", "×", "÷"].includes(lastChar)) {
-      expression = expression.slice(0, -1) + value;
-    } else {
-      expression += value;
+    if (["+", "-", "*", "/"].includes(last)) {
+      expression = expression.slice(0, -1);
     }
 
+    expression += value;
     justCalculated = false;
 
     update();
   }
 }
 
-// ✅ ACTUALIZAR DISPLAY SIN BUG
 function update(value) {
-  if (value !== undefined) {
-    display.innerText = value;
-  } else if (expression !== "") {
-    display.innerText = expression;
-  } else {
-    display.innerText = "0";
-  }
+  display.innerText = value !== undefined ? value : (expression || "0");
 }
