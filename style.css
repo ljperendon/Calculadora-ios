@@ -7,6 +7,7 @@ body {
   overflow: hidden;
 }
 
+/* CONTENEDOR PRINCIPAL */
 .calculator {
   display: flex;
   flex-direction: column;
@@ -15,45 +16,58 @@ body {
   margin: auto;
 }
 
+/* DISPLAY */
 #display {
   color: white;
-  font-size: 70px;
+  font-size: 80px;                /* ✅ grande tipo iPhone */
+  font-weight: 300;
   text-align: right;
   padding: 20px;
   flex: 1;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-end;          /* ✅ texto abajo */
   justify-content: flex-end;
 }
 
+/* GRID DE BOTONES */
 .buttons {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(4, 80px);  /* ✅ tamaño fijo */
+  justify-content: center;
+  gap: 12px;
   padding: 10px;
   margin-bottom: 20px;
 }
 
+/* BOTONES GENERALES */
 button {
-  font-size: 50px;
+  font-size: 36px;          /* ✅ números grandes */
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   border: none;
   background: #333;
   color: white;
-  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* EFECTO AL PULSAR */
 button:active {
   filter: brightness(1.3);
 }
 
+/* BOTONES GRISES */
 .gray {
   background: #a5a5a5;
   color: black;
+  font-size: 26px;   /* ✅ un poco más pequeños */
 }
 
+/* BOTONES NARANJA */
 .orange {
   background: #ff9500;
+  font-size: 34px;
   font-weight: bold;
 }
-``
