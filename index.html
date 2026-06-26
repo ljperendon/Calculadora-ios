@@ -10,23 +10,22 @@
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
 
-  <!-- ✅ iPhone modo app -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="apple-touch-icon" href="icon-192.png">
-
 </head>
 
 <body>
 
 <div class="calculator">
+
   <div id="display">0</div>
 
   <div class="buttons">
 
     <!-- FILA 1 -->
     <button class="gray">AC</button>
-    <button class="gray">C</button>
+    <button class="gray">⌫</button>
     <button class="gray">%</button>
     <button class="orange">÷</button>
 
@@ -55,16 +54,13 @@
     <button class="orange">=</button>
 
   </div>
+
 </div>
 
 <script src="script.js"></script>
 
-<!-- ✅ Registrar Service Worker -->
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
-</script>
-
-</body>
-</html>
+</script
