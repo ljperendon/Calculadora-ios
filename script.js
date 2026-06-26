@@ -21,52 +21,36 @@ function handle(value) {
     update();
   }
 
-  // ✅ BOTÓN C (reset total)
-  else if (value === "C") {
+  // ✅ RESET TOTAL (AC)
+  else if (value === "AC") {
     expression = "";
     justCalculated = false;
     update("0");
   }
 
-  // ✅ BOTÓN AC (funcionalidad especial)
-  else if (value === "AC") {
+  // ✅ BORRAR (⌫)
+  else if (value === "⌫") {
+    if (expression.length > 0) {
+      expression = expression.slice(0, -1);
+      update();
+    } else {
+      update("0");
+    }
+  }
 
-    if (expression === "") return;
+  // ✅ +/-
+  else if (value === "+/-") {
+    if (expression) {
+      expression = (-eval(expression)).toString();
+      update(expression);
+    }
+  }
 
-    try {
-      // resultado de operaciones previas
-      let result = eval(
-        expression
-          .replace(/×/g, "*")
-          .replace(/÷/g, "/")
-          .replace(/−/g, "-")
-      );
-
-      // fecha/hora → DDMMAAAAHHMM
-      let now = new Date();
-
-      let dd = String(now.getDate()).padStart(2, "0");
-      let mm = String(now.getMonth() + 1).padStart(2, "0");
-      let yy = String(now.getFullYear()).slice(-2);
-      let hh = String(now.getHours()).padStart(2, "0");
-      let min = String(now.getMinutes()).padStart(2, "0");
-
-      let fechaNumero = parseInt(dd + mm + yy + hh + min);
-
-      // operación final
-      let finalResult = fechaNumero - result;
-
-      // mostrar resultado completo
-      let output = expression + " + " + finalResult;
-
-      expression = output;
-      justCalculated = true;
-
-      update(output);
-
-    } catch {
-      update("Error");
-      expression = "";
+  // ✅ %
+  else if (value === "%") {
+    if (expression) {
+      expression = (eval(expression) / 100).toString();
+      update(expression);
     }
   }
 
@@ -115,3 +99,4 @@ function handle(value) {
 function update(value) {
   display.innerText = value !== undefined ? value : (expression || "0");
 }
+``
