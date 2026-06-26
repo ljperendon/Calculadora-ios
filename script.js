@@ -1,4 +1,3 @@
-
 let display = document.getElementById("display");
 let historyDisplay = document.getElementById("history");
 
