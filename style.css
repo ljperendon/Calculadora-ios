@@ -1,0 +1,48 @@
+
+body {
+  margin: 0;
+  background: black;
+  font-family: Arial;
+}
+
+.calculator {
+  max-width: 400px;
+  margin: auto;
+  padding: 10px;
+}
+
+#display {
+  color: white;
+  font-size: 60px;
+  text-align: right;
+  padding: 20px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+button {
+  font-size: 24px;
+  padding: 20px;
+  border-radius: 50%;
+  border: none;
+  background: #333;
+  color: white;
+}
+
+.gray {
+  background: #a5a5a5;
+  color: black;
+}
+
+.orange {
+  background: #ff9500;
+}
+
+.zero {
+  grid-column: span 2;
+  border-radius: 50px;
+}
