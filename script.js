@@ -1,10 +1,7 @@
-let display = document.getElementById("display");
-let historyDisplay = document.getElementById("history");
 
-let current = "0";
-let previous = null;
-let operator = null;
-let history = "";
+let display = document.getElementById("display");
+
+let expression = "";
 let justCalculated = false;
 
 document.querySelectorAll("button").forEach(btn => {
@@ -13,82 +10,66 @@ document.querySelectorAll("button").forEach(btn => {
 
 function handleInput(value) {
 
-  // NÚMEROS
+  // ✅ NÚMEROS
   if (!isNaN(value) || value === ".") {
 
     if (justCalculated) {
-      current = value;
-      history = "";
+      expression = value;
       justCalculated = false;
     } else {
-      if (current === "0") {
-        current = value;
-      } else {
-        current += value;
-      }
+      expression += value;
     }
 
     update();
   }
 
-  // RESET
+  // ✅ RESET
   else if (value === "AC") {
-    current = "0";
-    previous = null;
-    operator = null;
-    history = "";
+    expression = "";
     justCalculated = false;
-    update();
+    update("0");
   }
 
-  // IGUAL (comportamiento iPhone)
+  // ✅ IGUAL
   else if (value === "=") {
-    if (operator !== null) {
-      calculate();
+
+    try {
+      let result = eval(
+        expression
+          .replace(/×/g, "*")
+          .replace(/÷/g, "/")
+          .replace(/−/g, "-")
+      );
+
+      expression = result.toString();
+      justCalculated = true;
+
+      update(expression);
+
+    } catch {
+      update("Error");
     }
-
-    history = ""; // ✅ BORRA historial al terminar
-    update();
-
-    operator = null;
-    previous = null;
-    justCalculated = true;
   }
 
-  // OPERADORES
+  // ✅ OPERADORES
   else {
-    if (operator !== null && !justCalculated) {
-      calculate();
+
+    if (expression === "") return;
+
+    // evitar operadores duplicados
+    let lastChar = expression.trim().slice(-1);
+    if (["+", "−", "×", "÷"].includes(lastChar)) {
+      expression = expression.slice(0, -1) + value;
+    } else {
+      expression += value;
     }
 
-    operator = value;
-    previous = parseFloat(current);
-
-    history += (history ? " " : "") + current + " " + operator;
-
-    current = "0";
     justCalculated = false;
 
     update();
   }
 }
 
-function calculate() {
-  let a = previous;
-  let b = parseFloat(current);
-  let result = 0;
-
-  switch (operator) {
-    case "+": result = a + b; break;
-    case "−": result = a - b; break;
-    case "×": result = a * b; break;
-    case "÷": result = a / b; break;
-  }
-
-  current = result.toString();
-}
-
-function update() {
-  display.innerText = current;
-  historyDisplay.innerText = history;
+function update(value) {
+  display.innerText = value || expression || "0";
 }
