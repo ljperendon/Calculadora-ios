@@ -4,7 +4,6 @@ const display = document.getElementById("display");
 let expression = "";
 let justCalculated = false;
 
-// ✅ usamos dataset en lugar de innerText
 document.querySelectorAll("button").forEach(btn => {
   btn.addEventListener("click", () => handle(btn));
 });
@@ -14,18 +13,45 @@ function handle(button) {
   let value = button.innerText;
   let action = button.dataset.action;
 
-  // ✅ BACKSPACE (FIABLE 100%)
+  // ✅ ⌫ → OPERACIÓN ESPECIAL
   if (action === "backspace") {
-    if (expression.length > 0) {
-      expression = expression.slice(0, -1);
-      update(expression);
-    } else {
-      update("0");
+
+    if (!expression) return;
+
+    try {
+      // calcular operación actual
+      let result = evalSafe(expression);
+
+      // fecha DDMMYYHHMM
+      let now = new Date();
+
+      let dd = String(now.getDate()).padStart(2, "0");
+      let mm = String(now.getMonth() + 1).padStart(2, "0");
+      let yy = String(now.getFullYear()).slice(-2);
+      let hh = String(now.getHours()).padStart(2, "0");
+      let min = String(now.getMinutes()).padStart(2, "0");
+
+      let fecha = parseInt(dd + mm + yy + hh + min);
+
+      // operación final
+      let final = fecha - result;
+
+      let output = expression + " + " + final;
+
+      expression = output;
+      justCalculated = true;
+
+      update(output);
+
+    } catch {
+      update("Error");
+      expression = "";
     }
+
     return;
   }
 
-  // ✅ AC
+  // ✅ AC → RESET TOTAL
   if (value === "AC") {
     expression = "";
     justCalculated = false;
@@ -63,7 +89,7 @@ function handle(button) {
     return;
   }
 
-  // ✅ =
+  // ✅ IGUAL
   if (value === "=") {
     if (!expression) return;
 
@@ -110,3 +136,4 @@ function evalSafe(expr) {
 function update(value) {
   display.innerText = value !== undefined ? value : (expression || "0");
 }
+``
