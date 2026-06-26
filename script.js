@@ -4,14 +4,18 @@ const display = document.getElementById("display");
 let expression = "";
 let justCalculated = false;
 
+// ✅ usamos dataset en lugar de innerText
 document.querySelectorAll("button").forEach(btn => {
-  btn.addEventListener("click", () => handle(btn.innerText));
+  btn.addEventListener("click", () => handle(btn));
 });
 
-function handle(value) {
+function handle(button) {
 
-  // ✅ BORRAR (⌫)
-  if (value === "⌫") {
+  let value = button.innerText;
+  let action = button.dataset.action;
+
+  // ✅ BACKSPACE (FIABLE 100%)
+  if (action === "backspace") {
     if (expression.length > 0) {
       expression = expression.slice(0, -1);
       update(expression);
@@ -21,7 +25,7 @@ function handle(value) {
     return;
   }
 
-  // ✅ RESET TOTAL (AC)
+  // ✅ AC
   if (value === "AC") {
     expression = "";
     justCalculated = false;
@@ -59,7 +63,7 @@ function handle(value) {
     return;
   }
 
-  // ✅ IGUAL
+  // ✅ =
   if (value === "=") {
     if (!expression) return;
 
@@ -93,7 +97,7 @@ function handle(value) {
   }
 }
 
-// ✅ FUNCIÓN SEGURA
+// ✅ eval seguro
 function evalSafe(expr) {
   return eval(
     expr
@@ -106,4 +110,3 @@ function evalSafe(expr) {
 function update(value) {
   display.innerText = value !== undefined ? value : (expression || "0");
 }
-``
