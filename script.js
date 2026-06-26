@@ -10,7 +10,6 @@ document.querySelectorAll("button").forEach(btn => {
 
 function handle(value) {
 
-  // AC → RESET
   if (value === "AC") {
     expression = "";
     justCalculated = false;
@@ -18,7 +17,6 @@ function handle(value) {
     return;
   }
 
-  // C → OPERACIÓN ESPECIAL
   if (value === "C") {
 
     if (!expression) return;
@@ -127,3 +125,4 @@ function evalSafe(expr) {
 function update(value) {
   display.innerText = value !== undefined ? value : (expression || "0");
 }
+``
