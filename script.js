@@ -10,6 +10,25 @@ document.querySelectorAll("button").forEach(btn => {
 
 function handle(value) {
 
+  // ✅ BORRAR (⌫)
+  if (value === "⌫") {
+    if (expression.length > 0) {
+      expression = expression.slice(0, -1);
+      update(expression);
+    } else {
+      update("0");
+    }
+    return;
+  }
+
+  // ✅ RESET TOTAL (AC)
+  if (value === "AC") {
+    expression = "";
+    justCalculated = false;
+    update("0");
+    return;
+  }
+
   // ✅ NÚMEROS
   if (!isNaN(value) || value === ".") {
     if (justCalculated) {
@@ -18,70 +37,47 @@ function handle(value) {
     } else {
       expression += value;
     }
-    update();
-  }
-
-  // ✅ RESET TOTAL (AC)
-  else if (value === "AC") {
-    expression = "";
-    justCalculated = false;
-    update("0");
-  }
-
-  // ✅ BORRAR (⌫)
-  else if (value === "⌫") {
-    if (expression.length > 0) {
-      expression = expression.slice(0, -1);
-      update();
-    } else {
-      update("0");
-    }
+    update(expression);
+    return;
   }
 
   // ✅ +/-
-  else if (value === "+/-") {
+  if (value === "+/-") {
     if (expression) {
-      expression = (-eval(expression)).toString();
+      expression = (-evalSafe(expression)).toString();
       update(expression);
     }
+    return;
   }
 
   // ✅ %
-  else if (value === "%") {
+  if (value === "%") {
     if (expression) {
-      expression = (eval(expression) / 100).toString();
+      expression = (evalSafe(expression) / 100).toString();
       update(expression);
     }
+    return;
   }
 
   // ✅ IGUAL
-  else if (value === "=") {
-
-    if (expression === "") return;
+  if (value === "=") {
+    if (!expression) return;
 
     try {
-      let result = eval(
-        expression
-          .replace(/×/g, "*")
-          .replace(/÷/g, "/")
-          .replace(/−/g, "-")
-      );
-
+      let result = evalSafe(expression);
       expression = result.toString();
       justCalculated = true;
-
       update(expression);
-
     } catch {
       update("Error");
       expression = "";
     }
+    return;
   }
 
   // ✅ OPERADORES
-  else {
-
-    if (expression === "") return;
+  if (["+", "−", "×", "÷"].includes(value)) {
+    if (!expression) return;
 
     let last = expression.slice(-1);
 
@@ -92,8 +88,19 @@ function handle(value) {
     expression += value;
     justCalculated = false;
 
-    update();
+    update(expression);
+    return;
   }
+}
+
+// ✅ FUNCIÓN SEGURA
+function evalSafe(expr) {
+  return eval(
+    expr
+      .replace(/×/g, "*")
+      .replace(/÷/g, "/")
+      .replace(/−/g, "-")
+  );
 }
 
 function update(value) {
