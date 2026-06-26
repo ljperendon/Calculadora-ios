@@ -7,22 +7,25 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+  <!-- ✅ CSS -->
+  style.css
+
+  <!-- ✅ Manifest -->
+  manifest.json
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <link rel="apple-touch-icon" href="icon-192.png">
+  icon-192.png
 </head>
 
 <body>
 
 <div class="calculator">
 
-  <!-- ICONOS SUPERIORES -->
+  <!-- ICONOS SUPERIOR -->
   <div class="top-bar">
 
-    <!-- IZQUIERDA (reloj) -->
+    <!-- IZQUIERDA -->
     <div class="icon-left">
       <div class="icon-circle">
         <svg viewBox="0 0 24 24">
@@ -33,7 +36,7 @@
       </div>
     </div>
 
-    <!-- DERECHA (calculadora) -->
+    <!-- DERECHA -->
     <div class="icon-right">
       <div class="icon-circle">
         <svg viewBox="0 0 24 24">
@@ -56,32 +59,43 @@
   <!-- BOTONES -->
   <div class="buttons">
 
-    <!-- FILA 1 -->
     <button class="gray">AC</button>
     <button class="gray">C</button>
     <button class="gray">%</button>
     <button class="orange">÷</button>
 
-    <!-- FILA 2 -->
     <button>7</button>
     <button>8</button>
     <button>9</button>
     <button class="orange">×</button>
 
-    <!-- FILA 3 -->
     <button>4</button>
     <button>5</button>
     <button>6</button>
     <button class="orange">−</button>
 
-    <!-- FILA 4 -->
     <button>1</button>
     <button>2</button>
     <button>3</button>
     <button class="orange">+</button>
 
-    <!-- FILA 5 -->
     <button>+/-</button>
     <button>0</button>
     <button>.</button>
     <button class="orange">=</button>
+
+  </div>
+
+</div>
+
+<!-- ✅ SCRIPT BIEN ENLAZADO -->
+script.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+</body>
+</html>
