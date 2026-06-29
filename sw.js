@@ -1,4 +1,3 @@
-
 const CACHE_NAME = "calc-v1";
 
 const FILES = [
