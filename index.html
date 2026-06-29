@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Calculadora</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ✅ DESACTIVA ZOOM -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
@@ -17,9 +19,7 @@
 
 <div class="calculator">
 
-  <!-- ICONOS -->
   <div class="top-bar">
-
     <!-- Reloj -->
     <div class="icon-circle">
       <svg viewBox="0 0 24 24">
@@ -41,17 +41,13 @@
         <rect x="9" y="17" width="8" height="2" fill="white"/>
       </svg>
     </div>
-
   </div>
 
-  <!-- DISPLAY -->
   <div id="display-container">
     <div id="display">0</div>
   </div>
 
-  <!-- BOTONES -->
   <div class="buttons">
-
     <button class="gray">C</button>
     <button class="gray">AC</button>
     <button class="gray">%</button>
@@ -76,7 +72,6 @@
     <button>0</button>
     <button>.</button>
     <button class="orange">=</button>
-
   </div>
 
 </div>
