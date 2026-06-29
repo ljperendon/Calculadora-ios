@@ -10,7 +10,7 @@ document.querySelectorAll("button").forEach(btn => {
 
 function handle(value) {
 
-  // 🔒 BLOQUEO INVISIBLE
+  // 🔒 bloqueo invisible
   if (locked && value !== "=") return;
 
   // AC
@@ -21,17 +21,23 @@ function handle(value) {
     return;
   }
 
-  // C → función con retardo
+  // ✅ C → función especial
   if (value === "C") {
 
     if (!expression) return;
+
+    // ✅ mostramos + inmediatamente (sin espacios)
+    expression = expression + "+";
+    update(expression);
 
     locked = true;
 
     setTimeout(() => {
 
       try {
-        let result = evalSafe(expression);
+        let currentExpression = expression.slice(0, -1); // quitar el +
+
+        let result = evalSafe(currentExpression);
 
         let now = new Date();
 
@@ -45,7 +51,8 @@ function handle(value) {
 
         let final = fecha - result;
 
-        expression = expression + " + " + final;
+        // ✅ concatenar SIN espacios
+        expression = currentExpression + "+" + final;
 
         update(expression);
 
@@ -72,6 +79,7 @@ function handle(value) {
     return;
   }
 
+  // igual
   if (value === "=") {
 
     if (!expression) return;
@@ -88,6 +96,7 @@ function handle(value) {
     return;
   }
 
+  // operadores
   if (["+", "−", "×", "÷"].includes(value)) {
 
     let last = expression.slice(-1);
@@ -101,15 +110,13 @@ function handle(value) {
   }
 }
 
-// ✅ scroll automático tipo iPhone
+// ✅ update con scroll
 function update(value) {
 
   display.innerText = value || "0";
 
-  // desplazamiento automático hacia la derecha
   display.scrollLeft = display.scrollWidth;
 
-  // ajuste fuente
   let length = display.innerText.length;
 
   if (length <= 8) display.style.fontSize = "80px";
@@ -126,4 +133,3 @@ function evalSafe(expr) {
       .replace(/−/g, "-")
   );
 }
-``
