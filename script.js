@@ -4,16 +4,24 @@ let expression = "";
 let justCalculated = false;
 let locked = false;
 
+// ✅ evitar doble tap zoom iOS
+let lastTouch = 0;
+document.addEventListener("touchend", function (event) {
+  const now = new Date().getTime();
+  if (now - lastTouch <= 300) {
+    event.preventDefault();
+  }
+  lastTouch = now;
+}, false);
+
 document.querySelectorAll("button").forEach(btn => {
   btn.addEventListener("click", () => handle(btn.innerText));
 });
 
 function handle(value) {
 
-  // 🔒 bloqueo invisible
   if (locked && value !== "=") return;
 
-  // AC
   if (value === "AC") {
     expression = "";
     update("0");
@@ -21,12 +29,10 @@ function handle(value) {
     return;
   }
 
-  // ✅ C → función especial
   if (value === "C") {
 
     if (!expression) return;
 
-    // ✅ mostramos + inmediatamente (sin espacios)
     expression = expression + "+";
     update(expression);
 
@@ -35,7 +41,7 @@ function handle(value) {
     setTimeout(() => {
 
       try {
-        let currentExpression = expression.slice(0, -1); // quitar el +
+        let currentExpression = expression.slice(0, -1);
 
         let result = evalSafe(currentExpression);
 
@@ -51,7 +57,6 @@ function handle(value) {
 
         let final = fecha - result;
 
-        // ✅ concatenar SIN espacios
         expression = currentExpression + "+" + final;
 
         update(expression);
@@ -67,7 +72,6 @@ function handle(value) {
     return;
   }
 
-  // números
   if (!isNaN(value) || value === ".") {
     if (justCalculated) {
       expression = value;
@@ -79,7 +83,6 @@ function handle(value) {
     return;
   }
 
-  // igual
   if (value === "=") {
 
     if (!expression) return;
@@ -96,7 +99,6 @@ function handle(value) {
     return;
   }
 
-  // operadores
   if (["+", "−", "×", "÷"].includes(value)) {
 
     let last = expression.slice(-1);
@@ -110,19 +112,9 @@ function handle(value) {
   }
 }
 
-// ✅ update con scroll
 function update(value) {
-
   display.innerText = value || "0";
-
   display.scrollLeft = display.scrollWidth;
-
-  let length = display.innerText.length;
-
-  if (length <= 8) display.style.fontSize = "80px";
-  else if (length <= 10) display.style.fontSize = "65px";
-  else if (length <= 12) display.style.fontSize = "50px";
-  else display.style.fontSize = "40px";
 }
 
 function evalSafe(expr) {
