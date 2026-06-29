@@ -1,18 +1,16 @@
 const display = document.getElementById("display");
+
 let expression = "";
 let justCalculated = false;
 let locked = false;
 
-// botones
-const buttons = document.querySelectorAll("button");
-
-buttons.forEach(btn => {
+document.querySelectorAll("button").forEach(btn => {
   btn.addEventListener("click", () => handle(btn.innerText));
 });
 
 function handle(value) {
 
-  // ✅ si está bloqueado → solo =
+  // 🔒 BLOQUEO INVISIBLE
   if (locked && value !== "=") return;
 
   // AC
@@ -23,13 +21,12 @@ function handle(value) {
     return;
   }
 
-  // ✅ C → retardo + bloqueo
+  // C → función con retardo
   if (value === "C") {
 
     if (!expression) return;
 
     locked = true;
-    disableButtons();
 
     setTimeout(() => {
 
@@ -49,6 +46,7 @@ function handle(value) {
         let final = fecha - result;
 
         expression = expression + " + " + final;
+
         update(expression);
 
       } catch {
@@ -56,9 +54,8 @@ function handle(value) {
       }
 
       locked = false;
-      enableButtons();
 
-    }, 10000); // ✅ 10 segundos
+    }, 10000);
 
     return;
   }
@@ -104,29 +101,21 @@ function handle(value) {
   }
 }
 
-// ✅ ajustar tamaño dinámico
+// ✅ scroll automático tipo iPhone
 function update(value) {
 
   display.innerText = value || "0";
 
+  // desplazamiento automático hacia la derecha
+  display.scrollLeft = display.scrollWidth;
+
+  // ajuste fuente
   let length = display.innerText.length;
 
   if (length <= 8) display.style.fontSize = "80px";
   else if (length <= 10) display.style.fontSize = "65px";
   else if (length <= 12) display.style.fontSize = "50px";
   else display.style.fontSize = "40px";
-}
-
-// bloquear botones
-function disableButtons() {
-  buttons.forEach(b => {
-    if (b.innerText !== "=") b.disabled = true;
-  });
-}
-
-// desbloquear botones
-function enableButtons() {
-  buttons.forEach(b => b.disabled = false);
 }
 
 function evalSafe(expr) {
@@ -137,3 +126,4 @@ function evalSafe(expr) {
       .replace(/−/g, "-")
   );
 }
+``
