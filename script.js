@@ -4,7 +4,7 @@ let expression = "";
 let justCalculated = false;
 let locked = false;
 
-// ✅ evitar doble tap zoom iOS
+// ✅ evitar doble tap zoom (lo mantenemos)
 let lastTouch = 0;
 document.addEventListener("touchend", function (event) {
   const now = new Date().getTime();
@@ -20,8 +20,10 @@ document.querySelectorAll("button").forEach(btn => {
 
 function handle(value) {
 
+  // bloqueo invisible
   if (locked && value !== "=") return;
 
+  // AC
   if (value === "AC") {
     expression = "";
     update("0");
@@ -29,10 +31,12 @@ function handle(value) {
     return;
   }
 
+  // C → función especial
   if (value === "C") {
 
     if (!expression) return;
 
+    // ✅ muestra + inmediatamente
     expression = expression + "+";
     update(expression);
 
@@ -72,6 +76,7 @@ function handle(value) {
     return;
   }
 
+  // números
   if (!isNaN(value) || value === ".") {
     if (justCalculated) {
       expression = value;
@@ -83,6 +88,7 @@ function handle(value) {
     return;
   }
 
+  // igual
   if (value === "=") {
 
     if (!expression) return;
@@ -99,6 +105,7 @@ function handle(value) {
     return;
   }
 
+  // operadores
   if (["+", "−", "×", "÷"].includes(value)) {
 
     let last = expression.slice(-1);
@@ -113,8 +120,28 @@ function handle(value) {
 }
 
 function update(value) {
+
   display.innerText = value || "0";
+
+  // ✅ scroll automático
   display.scrollLeft = display.scrollWidth;
+
+  // ✅ 🔥 AJUSTE DINÁMICO DE FUENTE (CORREGIDO)
+  let length = display.innerText.length;
+
+  if (length <= 6) {
+    display.style.fontSize = "80px";
+  } else if (length <= 8) {
+    display.style.fontSize = "70px";
+  } else if (length <= 10) {
+    display.style.fontSize = "60px";
+  } else if (length <= 12) {
+    display.style.fontSize = "50px";
+  } else if (length <= 14) {
+    display.style.fontSize = "45px";
+  } else {
+    display.style.fontSize = "40px";
+  }
 }
 
 function evalSafe(expr) {
