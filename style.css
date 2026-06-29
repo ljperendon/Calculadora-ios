@@ -28,16 +28,21 @@ body {
   border-radius: 50%;
 }
 
-/* DISPLAY */
-#display {
-  color: white;
-  font-size: 80px;
-  text-align: right;
-  padding: 20px;
+/* DISPLAY CONTENEDOR */
+#display-container {
   flex: 1;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* TEXTO */
+#display {
+  color: white;
+  font-size: 80px;
+  white-space: nowrap;
   overflow: hidden;
 }
 
@@ -60,8 +65,8 @@ button {
   color: white;
 }
 
-button:disabled {
-  opacity: 0.4;
+button:active {
+  filter: brightness(1.3);
 }
 
 .gray {
@@ -72,3 +77,4 @@ button:disabled {
 .orange {
   background: #ff9500;
 }
+``
