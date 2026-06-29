@@ -71,7 +71,7 @@ function handle(value) {
 
       locked = false;
 
-    }, 10000);
+    }, 5000);
 
     return;
   }
