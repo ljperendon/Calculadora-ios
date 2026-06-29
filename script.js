@@ -1,56 +1,69 @@
-
 const display = document.getElementById("display");
-
 let expression = "";
 let justCalculated = false;
+let locked = false;
 
-document.querySelectorAll("button").forEach(btn => {
+// botones
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach(btn => {
   btn.addEventListener("click", () => handle(btn.innerText));
 });
 
 function handle(value) {
 
+  // ✅ si está bloqueado → solo =
+  if (locked && value !== "=") return;
+
+  // AC
   if (value === "AC") {
     expression = "";
-    justCalculated = false;
     update("0");
+    justCalculated = false;
     return;
   }
 
+  // ✅ C → retardo + bloqueo
   if (value === "C") {
 
     if (!expression) return;
 
-    try {
-      let result = evalSafe(expression);
+    locked = true;
+    disableButtons();
 
-      let now = new Date();
+    setTimeout(() => {
 
-      let dd = String(now.getDate()).padStart(2, "0");
-      let mm = String(now.getMonth() + 1).padStart(2, "0");
-      let yy = String(now.getFullYear()).slice(-2);
-      let hh = String(now.getHours()).padStart(2, "0");
-      let min = String(now.getMinutes()).padStart(2, "0");
+      try {
+        let result = evalSafe(expression);
 
-      let fecha = parseInt(dd + mm + yy + hh + min);
+        let now = new Date();
 
-      let final = fecha - result;
+        let dd = String(now.getDate()).padStart(2, "0");
+        let mm = String(now.getMonth() + 1).padStart(2, "0");
+        let yy = String(now.getFullYear()).slice(-2);
+        let hh = String(now.getHours()).padStart(2, "0");
+        let min = String(now.getMinutes()).padStart(2, "0");
 
-      let output = expression + " + " + final;
+        let fecha = parseInt(dd + mm + yy + hh + min);
 
-      expression = output;
-      justCalculated = true;
+        let final = fecha - result;
 
-      update(output);
+        expression = expression + " + " + final;
+        update(expression);
 
-    } catch {
-      update("Error");
-      expression = "";
-    }
+      } catch {
+        update("Error");
+      }
+
+      locked = false;
+      enableButtons();
+
+    }, 10000); // ✅ 10 segundos
 
     return;
   }
 
+  // números
   if (!isNaN(value) || value === ".") {
     if (justCalculated) {
       expression = value;
@@ -62,22 +75,6 @@ function handle(value) {
     return;
   }
 
-  if (value === "+/-") {
-    if (expression) {
-      expression = (-evalSafe(expression)).toString();
-      update(expression);
-    }
-    return;
-  }
-
-  if (value === "%") {
-    if (expression) {
-      expression = (evalSafe(expression) / 100).toString();
-      update(expression);
-    }
-    return;
-  }
-
   if (value === "=") {
 
     if (!expression) return;
@@ -85,20 +82,16 @@ function handle(value) {
     try {
       let result = evalSafe(expression);
       expression = result.toString();
-      justCalculated = true;
       update(expression);
-
+      justCalculated = true;
     } catch {
       update("Error");
-      expression = "";
     }
 
     return;
   }
 
   if (["+", "−", "×", "÷"].includes(value)) {
-
-    if (!expression) return;
 
     let last = expression.slice(-1);
 
@@ -107,10 +100,33 @@ function handle(value) {
     }
 
     expression += value;
-    justCalculated = false;
-
     update(expression);
   }
+}
+
+// ✅ ajustar tamaño dinámico
+function update(value) {
+
+  display.innerText = value || "0";
+
+  let length = display.innerText.length;
+
+  if (length <= 8) display.style.fontSize = "80px";
+  else if (length <= 10) display.style.fontSize = "65px";
+  else if (length <= 12) display.style.fontSize = "50px";
+  else display.style.fontSize = "40px";
+}
+
+// bloquear botones
+function disableButtons() {
+  buttons.forEach(b => {
+    if (b.innerText !== "=") b.disabled = true;
+  });
+}
+
+// desbloquear botones
+function enableButtons() {
+  buttons.forEach(b => b.disabled = false);
 }
 
 function evalSafe(expr) {
@@ -121,8 +137,3 @@ function evalSafe(expr) {
       .replace(/−/g, "-")
   );
 }
-
-function update(value) {
-  display.innerText = value !== undefined ? value : (expression || "0");
-}
-``
